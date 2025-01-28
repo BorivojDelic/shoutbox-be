@@ -3,7 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { MessageEntity } from '../message/message.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'files' })
 export class FileEntity {
@@ -22,6 +26,17 @@ export class FileEntity {
   @Column()
   size: number;
 
+  @Column({ nullable: true })
+  messageId: number;
+
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => MessageEntity, (message) => message.files, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'messageId', referencedColumnName: 'id' })
+  @Exclude()
+  message: MessageEntity;
 }

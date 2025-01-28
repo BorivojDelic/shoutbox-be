@@ -1,6 +1,6 @@
 import * as winston from 'winston';
-import * as chalk from 'chalk';
 import { LoggerOptions } from 'winston';
+import * as chalk from 'chalk';
 import { Injectable, LoggerService } from '@nestjs/common';
 
 @Injectable()

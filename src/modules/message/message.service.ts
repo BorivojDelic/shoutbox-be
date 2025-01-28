@@ -19,8 +19,8 @@ export class MessageService {
       select: {
         id: true,
         message: true,
-        imageUrl: true,
       },
+      relations: ['files'],
     });
   }
 

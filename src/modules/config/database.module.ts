@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MessageEntity } from '../message/message.entity';
 import 'dotenv/config';
+import { FileEntity } from '../file/file.entity';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import 'dotenv/config';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [MessageEntity],
+      entities: [MessageEntity, FileEntity],
       synchronize: true, // Development Only, Migrations for production
     }),
   ],

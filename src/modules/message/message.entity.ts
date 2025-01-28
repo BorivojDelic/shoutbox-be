@@ -3,7 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { FileEntity } from '../file/file.entity';
 
 @Entity({ name: 'messages' })
 export class MessageEntity {
@@ -19,9 +21,9 @@ export class MessageEntity {
   @Column()
   message: string;
 
-  @Column({ length: 255, nullable: true })
-  imageUrl: string;
-
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => FileEntity, (file) => file.message)
+  files: FileEntity[];
 }
