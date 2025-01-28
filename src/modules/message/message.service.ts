@@ -34,6 +34,18 @@ export class MessageService {
       userAgent: userAgent,
       message: message,
     });
-    return await this.messageRepository.save(newMessage);
+    const created = await this.messageRepository.save(newMessage);
+
+    // delete old message if needed
+    const messages = await this.messageRepository.find({
+      order: { createdAt: 'asc' },
+    });
+
+    if (messages.length > 10) {
+      const oldMessages = messages.slice(0, messages.length - 10);
+      await this.messageRepository.remove(oldMessages);
+    }
+
+    return created;
   }
 }
