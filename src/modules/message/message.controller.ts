@@ -9,11 +9,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { UploadedFiles } from '@nestjs/common/decorators/http/route-params.decorator';
 import { Request } from 'express';
 
 import { MessageService } from './message.service';
 import { MULTER_UPLOAD_IMAGE_OPTIONS } from './message.constants';
-import { UploadedFiles } from '@nestjs/common/decorators/http/route-params.decorator';
 import { FileType } from '../../shared/DTOs/file.dto';
 import { CreateMessageDto } from './message.dto';
 
@@ -37,6 +37,6 @@ export class MessageController {
     console.log(files);
     const userIp = req.socket.remoteAddress || '';
     const userAgent = req.headers['user-agent'] || '';
-    return await this.messagesService.create(message, userIp, userAgent);
+    return await this.messagesService.create(message, userIp, userAgent, files);
   }
 }
