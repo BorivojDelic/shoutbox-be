@@ -6,10 +6,16 @@ import {
   Req,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 
 import { MessageService } from './message.service';
+import { MULTER_UPLOAD_IMAGE_OPTIONS } from './message.constants';
+import { UploadedFiles } from '@nestjs/common/decorators/http/route-params.decorator';
+import { FileType } from '../../shared/DTOs/file.dto';
+import { CreateMessageDto } from './message.dto';
 
 @Controller('messages')
 export class MessageController {
@@ -21,8 +27,14 @@ export class MessageController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor('files', 10, MULTER_UPLOAD_IMAGE_OPTIONS))
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() { message }: { message: string }, @Req() req: Request) {
+  async create(
+    @UploadedFiles() files: FileType[],
+    @Body() { message }: CreateMessageDto,
+    @Req() req: Request,
+  ) {
+    console.log(files);
     const userIp = req.socket.remoteAddress || '';
     const userAgent = req.headers['user-agent'] || '';
     return await this.messagesService.create(message, userIp, userAgent);
