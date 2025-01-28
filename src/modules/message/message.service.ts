@@ -23,4 +23,17 @@ export class MessageService {
       },
     });
   }
+
+  async create(
+    message: string,
+    userIp: string,
+    userAgent: string,
+  ): Promise<MessageEntity> {
+    const newMessage = this.messageRepository.create({
+      userIp: userIp,
+      userAgent: userAgent,
+      message: message,
+    });
+    return await this.messageRepository.save(newMessage);
+  }
 }
