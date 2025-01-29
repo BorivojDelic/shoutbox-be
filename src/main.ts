@@ -3,6 +3,7 @@ import { AppModule } from './modules/app/app.module';
 import { useContainer } from 'class-validator';
 import { TrimBodyPipe } from './shared/transformers/dto-property.transformer';
 import { ValidationError, ValidationPipe } from '@nestjs/common';
+import * as cors from 'cors';
 import { ValidationException } from './exceptions/validation.exception';
 import { mapErrorMessagesFromValidator } from './shared/helpers';
 import { ValidationFilter } from './exceptions/validation.filter';
@@ -15,6 +16,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  app.use(
+    cors({
+      // TODO: add CORS origin
+      exposedHeaders: ['Content-Disposition'],
+    }),
+  );
+  app.setGlobalPrefix('/api');
 
   app.useGlobalFilters(
     new InternalServerErrorExceptionFilter(),

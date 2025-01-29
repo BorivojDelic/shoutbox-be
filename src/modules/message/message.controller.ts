@@ -34,7 +34,6 @@ export class MessageController {
     @Body() { message }: CreateMessageDto,
     @Req() req: Request,
   ) {
-    console.log(files);
     const userIp = req.socket.remoteAddress || '';
     const userAgent = req.headers['user-agent'] || '';
     return await this.messagesService.create(message, userIp, userAgent, files);

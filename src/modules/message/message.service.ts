@@ -21,10 +21,7 @@ export class MessageService {
     return await this.messageRepository.find({
       order: { id: 'DESC' },
       take: this.messageLimit,
-      select: {
-        id: true,
-        message: true,
-      },
+      select: { id: true, message: true, files: { id: true } },
       relations: ['files'],
     });
   }
