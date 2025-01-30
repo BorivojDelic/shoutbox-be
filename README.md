@@ -1,16 +1,25 @@
 # Shoubox API
 
-## Description
+## Introduction
 
-## Project setup
+The Shoubox API is a backend service built using NestJS.
 
-```bash
-$ npm install
-```
-Create `.env` file according to `.env.example`.
+## Getting Started
+
+### Prerequisites
+
+*   **Node.js:** (Version 18 or higher recommended)
+*   **A Database Server:** MySQL
+
+### Installation
+1.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+2.  **Configure Environment Variables:**
+    *   Create a `.env` file in the root directory of the project, based on the provided `.env.example`.
 
 ## Technical Overview
-
 - NestJS framework
 - socket.io library for real time communication
 - TypeORM library for database management
@@ -19,15 +28,10 @@ Create `.env` file according to `.env.example`.
 - Custom DTOs and pipes for data transformation
 - Custom Exceptions and Filters for error handling
 
-## Compile and run the project
+## Running the Application
+
+For running the application in development mode with automatic file watching and restarts:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
