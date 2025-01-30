@@ -18,7 +18,6 @@ Create `.env` file according to `.env.example`.
 - multer library for file upload
 - Custom DTOs and pipes for data transformation
 - Custom Exceptions and Filters for error handling
-- ...
 
 ## Compile and run the project
 
