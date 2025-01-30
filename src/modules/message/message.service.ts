@@ -5,6 +5,7 @@ import { MessageEntity } from './message.entity';
 import { FileType } from '../../shared/DTOs/file.dto';
 import { FileEntity } from '../file/file.entity';
 import { MESSAGES_LIMIT } from '../../shared/constants/global.constants';
+import { MessageGateway } from './message.gateway';
 
 @Injectable()
 export class MessageService {
@@ -15,15 +16,27 @@ export class MessageService {
     private readonly messageRepository: Repository<MessageEntity>,
     @InjectRepository(FileEntity)
     private readonly fileEntityRepository: Repository<FileEntity>,
+    private readonly messageGateway: MessageGateway,
   ) {}
 
   async findAll(): Promise<MessageEntity[]> {
-    return await this.messageRepository.find({
-      order: { id: 'DESC' },
+    const messages = await this.messageRepository.find({
+      order: { createdAt: 'DESC' },
       take: this.messageLimit,
-      select: { id: true, message: true, files: { id: true } },
+      select: {
+        id: true,
+        userIp: true,
+        userAgent: true,
+        message: true,
+        createdAt: true,
+        files: { id: true },
+      },
       relations: ['files'],
     });
+    return messages.map((message) => ({
+      ...message,
+      userIp: message.userIp.replace('::ffff:', ''),
+    }));
   }
 
   async create(
@@ -65,6 +78,10 @@ export class MessageService {
       const oldMessages = messages.slice(0, messages.length - 10);
       await this.messageRepository.remove(oldMessages);
     }
+
+    this.findAll().then((messages) => {
+      this.messageGateway.sendMessages(messages);
+    });
 
     return created;
   }

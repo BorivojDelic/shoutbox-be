@@ -17,12 +17,12 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  app.use(
-    cors({
-      // TODO: add CORS origin
-      exposedHeaders: ['Content-Disposition'],
-    }),
-  );
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
   app.setGlobalPrefix('/api');
 
   app.useGlobalFilters(
